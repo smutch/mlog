@@ -5,20 +5,22 @@ int main(int argc, char *argv[])
 {
   MPI_Init(&argc, &argv);
 
-  const char *name = "simon";
+  const char *name = "Sport!";
 
   init_mlog(MPI_COMM_WORLD, stdout, stdout, stderr);
 
-  mlog(MLOG_MSG, "hello %s", name);
-  mlog(MLOG_OPEN|MLOG_TIMERSTART, "hello:");
-  mlog(MLOG_CONT, "simon");
-  mlog(MLOG_MSG|MLOG_TIMERSTART, "is the best!");
-  mlog(MLOG_CLOSE|MLOG_TIMERSTOP, "...boom!");
+  mlog(MLOG_MSG, "G'day %s", name);
+  mlog(MLOG_OPEN | MLOG_TIMERSTART, "Starting timer 1:");
+  mlog(MLOG_CONT, "This log message won't start a new line...");
+  mlog(MLOG_MSG | MLOG_TIMERSTART, "...Timers can also be nested, so let's start timer 2.");
+  mlog(MLOG_CLOSE | MLOG_TIMERSTOP, "...and end it.  That was quick!");
+  mlog(MLOG_MSG, "Now wait for 1 second.");
   sleep(1);
-  mlog(MLOG_TIMERSTOP, "excellent...");
+  mlog(MLOG_TIMERSTOP | MLOG_CONT, "...and check timer 1...");
+  mlog(MLOG_MSG, "Excellent!");
 
-  mlog(MLOG_NOINDENT, "<WARNING> Error is coming...");
-  mlog_error("Test");
+  mlog(MLOG_NOINDENT, "<WARNING> An error is coming...");
+  mlog_error("Don't worry - this is just a test.");
 
   MPI_Finalize();
 

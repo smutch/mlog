@@ -52,3 +52,6 @@ dkms.conf
 
 # tags
 tags
+
+# executables
+test

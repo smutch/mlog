@@ -3,22 +3,31 @@
 #include <stdarg.h>
 #include "mlog.h"
 
-void init_mlog(MPI_Comm comm, FILE *file_info, FILE *file_warning, FILE *file_error)
+void init_mlog(MPI_Comm comm,
+    FILE *file_info,
+    FILE *file_warning,
+    FILE *file_error)
 {
-  for(int ii=0; ii < MLOG_NTIMERS; ii++)
+  for(int ii = 0; ii < MLOG_NTIMERS; ii++)
     _mlog.timer_on[ii] = false;
 
-  _mlog.file_info = file_info;
+  _mlog.file_info    = file_info;
   _mlog.file_warning = file_warning;
-  _mlog.file_error = file_error;
+  _mlog.file_error   = file_error;
 
-  _mlog.comm = comm;
-  _mlog.cont = false;
+  _mlog.comm         = comm;
+  _mlog.cont         = false;
 }
 
-void _mlog_error(const char *fmt, const char *file_name, const char *func_name, int lineno, ...)
+
+void _mlog_error(const char *fmt,
+    const char *file_name,
+    const char *func_name,
+    int lineno,
+    ...)
 {
   int rank;
+
   MPI_Comm_rank(_mlog.comm, &rank);
   fprintf(_mlog.file_error, "<ERROR> rank %d [%s->%s +%d]: ", rank, func_name, file_name, lineno);
 
@@ -30,12 +39,19 @@ void _mlog_error(const char *fmt, const char *file_name, const char *func_name, 
   fprintf(_mlog.file_error, "\n");
 }
 
-void _mlog_info(int flags, const char *fmt, const char *file_name, const char *func_name, int lineno, ...)
+
+void _mlog_info(int flags,
+    const char *fmt,
+    const char *file_name,
+    const char *func_name,
+    int lineno,
+    ...)
 {
-  int rank;
+  int   rank;
+
   MPI_Comm_rank(_mlog.comm, &rank);
   FILE *fd = _mlog.file_info;
-  
+
   if (rank != 0)
   {
     if ((flags & MLOG_ALLRANKS) != MLOG_ALLRANKS)
@@ -51,7 +67,7 @@ void _mlog_info(int flags, const char *fmt, const char *file_name, const char *f
   if (!_mlog.cont)
   {
     if ((flags & MLOG_NOINDENT) != MLOG_NOINDENT)
-      for(int ii=0; ii < _mlog.indent; ii++)
+      for(int ii = 0; ii < _mlog.indent; ii++)
         fprintf(fd, "    ");
   }
   else
@@ -67,15 +83,17 @@ void _mlog_info(int flags, const char *fmt, const char *file_name, const char *f
 
   if((flags & MLOG_TIMERSTOP) == MLOG_TIMERSTOP)
   {
-    bool success = false;
+    bool           success = false;
     struct timeval now, result;
+
     gettimeofday(&now, NULL);
-    for(int ii=MLOG_NTIMERS-1; ii >= 0; ii--)
+
+    for(int ii = MLOG_NTIMERS - 1; ii >= 0; ii--)
       if(_mlog.timer_on[ii])
       {
         timersub(&now, &_mlog.timer[ii], &result);
         _mlog.timer_on[ii] = false;
-        success = true;
+        success            = true;
         break;
       }
     if(success)
@@ -99,17 +117,16 @@ void _mlog_info(int flags, const char *fmt, const char *file_name, const char *f
   {
     // find the first empty timer and record the current time
     bool success = false;
-    for(int ii=0; ii < MLOG_NTIMERS; ii++)
+    for(int ii = 0; ii < MLOG_NTIMERS; ii++)
       if(!_mlog.timer_on[ii])
       {
         gettimeofday(&_mlog.timer[ii], NULL);
         _mlog.timer_on[ii] = true;
-        success = true;
+        success            = true;
         break;
       }
 
     if(!success)
       mlog_error("Maximum timer depth exceeded.");
   }
-
 }

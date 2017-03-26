@@ -28,13 +28,13 @@ typedef struct mlog_t {
 
 extern mlog_t _mlog;
 #ifdef _MAIN
-  mlog_t _mlog;
+mlog_t        _mlog;
 #endif
 
 void init_mlog(MPI_Comm comm, FILE *file_info, FILE *file_warning, FILE *file_error);
 
-#define mlog_error(fmt, ...) _mlog_error(fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define mlog_error(fmt, ...) _mlog_error(fmt, __FILE__, __func__, __LINE__, ## __VA_ARGS__)
 void _mlog_error(const char *fmt, const char *file_name, const char *func_name, int lineno, ...);
 
-#define mlog(flags, fmt, ...) _mlog_info(flags, fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#define mlog(flags, fmt, ...) _mlog_info(flags, fmt, __FILE__, __func__, __LINE__, ## __VA_ARGS__)
 void _mlog_info(int flags, const char *fmt, const char *file_name, const char *func_name, int lineno, ...);
