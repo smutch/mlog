@@ -21,5 +21,5 @@ clean:
 	rm -f $(OBJ) libmlog.so test
 
 cleanall: clean
-	rm ${prefix}/lib/libmlog.so
-	rm ${prefix}/include/mlog.h
+	rm -f ${PREFIX}/lib/libmlog.so
+	rm -f ${PREFIX}/include/mlog.h
