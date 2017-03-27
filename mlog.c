@@ -40,8 +40,8 @@ void _mlog_error(const char *fmt,
 }
 
 
-void _mlog_info(int flags,
-    const char *fmt,
+void _mlog_info(const char *fmt,
+    int flags,
     const char *file_name,
     const char *func_name,
     int lineno,
