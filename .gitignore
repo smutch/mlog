@@ -55,3 +55,6 @@ tags
 
 # executables
 test
+
+# scons
+.sconsign.dblite
