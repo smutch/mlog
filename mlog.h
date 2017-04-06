@@ -26,8 +26,9 @@ typedef struct mlog_t {
   int indent;
 } mlog_t;
 
+#ifndef _MAIN
 extern mlog_t _mlog;
-#ifdef _MAIN
+#else
 mlog_t        _mlog;
 #endif
 

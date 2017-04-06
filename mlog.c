@@ -52,14 +52,11 @@ void _mlog_info(const char *fmt,
   MPI_Comm_rank(_mlog.comm, &rank);
   FILE *fd = _mlog.file_info;
 
-  if (rank != 0)
-  {
-    if ((flags & MLOG_ALLRANKS) != MLOG_ALLRANKS)
-      return;
-    else
+  if ((rank != 0) && ((flags & MLOG_ALLRANKS) != MLOG_ALLRANKS))
+    return;
+  
+  if ((flags & MLOG_ALLRANKS) == MLOG_ALLRANKS)
       fprintf(fd, "rank %d: ", rank);
-  }
-
 
   if ((flags & MLOG_CLOSE) == MLOG_CLOSE)
     _mlog.indent--;
