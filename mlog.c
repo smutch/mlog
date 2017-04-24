@@ -16,7 +16,6 @@ void init_mlog(MPI_Comm comm,
   _mlog.file_error   = file_error;
 
   _mlog.comm         = comm;
-  _mlog.cont         = false;
 }
 
 
@@ -54,21 +53,24 @@ void _mlog_info(const char *fmt,
 
   if ((rank != 0) && ((flags & MLOG_ALLRANKS) != MLOG_ALLRANKS))
     return;
-  
-  if ((flags & MLOG_ALLRANKS) == MLOG_ALLRANKS)
-      fprintf(fd, "rank %d: ", rank);
 
   if ((flags & MLOG_CLOSE) == MLOG_CLOSE)
-    _mlog.indent--;
-
-  if (!_mlog.cont)
   {
+    _mlog.indent--;
+    if (_mlog.indent < 0)
+      _mlog.indent = 0;
+  }
+
+  if ((flags & MLOG_CONT) != MLOG_CONT)
+  {
+    fprintf(fd, "\n");
     if ((flags & MLOG_NOINDENT) != MLOG_NOINDENT)
       for(int ii = 0; ii < _mlog.indent; ii++)
         fprintf(fd, "    ");
   }
-  else
-    fprintf(fd, " ");
+  
+  if ((flags & MLOG_ALLRANKS) == MLOG_ALLRANKS)
+      fprintf(fd, "rank %d: ", rank);
 
   if ((flags & MLOG_LOCATION) == MLOG_LOCATION)
     fprintf(fd, "[%s->%s +%d] ", func_name, file_name, lineno);
@@ -98,14 +100,6 @@ void _mlog_info(const char *fmt,
     else
       mlog_error("Failed to find open timer to close.");
   }
-
-  if ((flags & MLOG_CONT) != MLOG_CONT)
-  {
-    fprintf(fd, "\n");
-    _mlog.cont = false;
-  }
-  else
-    _mlog.cont = true;
 
   if ((flags & MLOG_OPEN) == MLOG_OPEN)
     _mlog.indent++;

@@ -22,7 +22,6 @@ typedef struct mlog_t {
   FILE *file_info;
   FILE *file_warning;
   FILE *file_error;
-  bool cont;
   int indent;
 } mlog_t;
 
