@@ -52,7 +52,7 @@ Mkfile.old
 dkms.conf
 
 # tags
-tags
+.tags
 
 # executables
 test
