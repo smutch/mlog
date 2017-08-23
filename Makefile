@@ -6,20 +6,20 @@ SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
  
 lib: $(filter-out test.o,$(OBJ))
-	$(CC) -shared $^ -o libmlog.so
+	ar rcs libmlog.a $^ 
 
 install: lib
 	@mkdir -p ${PREFIX}/lib
 	@mkdir -p ${PREFIX}/include
 	@cp mlog.h ${PREFIX}/include
-	@cp libmlog.so ${PREFIX}/lib
+	@cp libmlog.a ${PREFIX}/lib
 
 test: $(OBJ)
  
 .PHONY: clean cleanall
 clean:
-	rm -f $(OBJ) libmlog.so test
+	rm -f $(OBJ) libmlog.a test
 
 cleanall: clean
-	rm -f ${PREFIX}/lib/libmlog.so
+	rm -f ${PREFIX}/lib/libmlog.a
 	rm -f ${PREFIX}/include/mlog.h
