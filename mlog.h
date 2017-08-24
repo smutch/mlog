@@ -12,6 +12,7 @@
 #define MLOG_LOCATION 64
 #define MLOG_ALLRANKS 128
 #define MLOG_NOINDENT 256
+#define MLOG_FLUSH 512
 
 #define MLOG_NTIMERS 3
 

@@ -36,6 +36,7 @@ void _mlog_error(const char *fmt,
   va_end(args);
 
   fprintf(_mlog.file_error, "\n");
+  fflush(_mlog.file_error);
 }
 
 
@@ -120,4 +121,7 @@ void _mlog_info(const char *fmt,
     if(!success)
       mlog_error("Maximum timer depth exceeded.");
   }
+
+  if ((flags & MLOG_FLUSH) == MLOG_FLUSH)
+    fflush(fd);
 }
