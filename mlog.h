@@ -1,9 +1,9 @@
 #ifndef _MLOG_H
 #define _MLOG_H
-#include <sys/time.h>
+#include <mpi.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <mpi.h>
+#include <sys/time.h>
 
 #define MLOG_MESG 1
 #define MLOG_OPEN 2
@@ -19,31 +19,31 @@
 #define MLOG_NTIMERS 3
 
 typedef struct mlog_t {
-  struct timeval timer[MLOG_NTIMERS];
-  bool timer_on[MLOG_NTIMERS];
-  MPI_Comm comm;
-  FILE *file_info;
-  FILE *file_warning;
-  FILE *file_error;
-  int indent;
+    struct timeval timer[MLOG_NTIMERS];
+    bool timer_on[MLOG_NTIMERS];
+    MPI_Comm comm;
+    FILE* file_info;
+    FILE* file_warning;
+    FILE* file_error;
+    int indent;
 } mlog_t;
 
 #ifndef _MAIN
 extern mlog_t _mlog;
 #else
-mlog_t        _mlog;
+mlog_t _mlog;
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-void init_mlog(MPI_Comm comm, FILE *file_info, FILE *file_warning, FILE *file_error);
+void init_mlog(MPI_Comm comm, FILE* file_info, FILE* file_warning, FILE* file_error);
 
-#define mlog_error(fmt, ...) _mlog_error(fmt, __FILE__, __func__, __LINE__, ## __VA_ARGS__)
-void _mlog_error(const char *fmt, const char *file_name, const char *func_name, int lineno, ...);
+#define mlog_error(fmt, ...) _mlog_error(fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+void _mlog_error(const char* fmt, const char* file_name, const char* func_name, int lineno, ...);
 
-#define mlog(fmt, flags, ...) _mlog_info(fmt, flags, __FILE__, __func__, __LINE__, ## __VA_ARGS__)
-void _mlog_info(const char *fmt, int flags, const char *file_name, const char *func_name, int lineno, ...);
+#define mlog(fmt, flags, ...) _mlog_info(fmt, flags, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+void _mlog_info(const char* fmt, int flags, const char* file_name, const char* func_name, int lineno, ...);
 #ifdef __cplusplus
 }
 #endif
