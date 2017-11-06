@@ -1,4 +1,3 @@
-#define _MAIN
 #include "mlog.h"
 #include <stdarg.h>
 #include <stdlib.h>
