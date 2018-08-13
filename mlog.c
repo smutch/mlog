@@ -1,6 +1,5 @@
 #include "mlog.h"
 #include <stdarg.h>
-#include <stdlib.h>
 
 void init_mlog(MPI_Comm comm,
     FILE* file_info,

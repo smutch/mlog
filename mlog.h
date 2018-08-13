@@ -5,16 +5,16 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-#define MLOG_MESG 1
-#define MLOG_OPEN 2
-#define MLOG_CLOSE 4
-#define MLOG_CONT 8
-#define MLOG_TIMERSTART 16
-#define MLOG_TIMERSTOP 32
-#define MLOG_LOCATION 64
-#define MLOG_ALLRANKS 128
-#define MLOG_NOINDENT 256
-#define MLOG_FLUSH 512
+#define MLOG_MESG (unsigned int)1
+#define MLOG_OPEN (unsigned int)2
+#define MLOG_CLOSE (unsigned int)4
+#define MLOG_CONT (unsigned int)8
+#define MLOG_TIMERSTART (unsigned int)16
+#define MLOG_TIMERSTOP (unsigned int)32
+#define MLOG_LOCATION (unsigned int)64
+#define MLOG_ALLRANKS (unsigned int)128
+#define MLOG_NOINDENT (unsigned int)256
+#define MLOG_FLUSH (unsigned int)512
 
 #define MLOG_NTIMERS 3
 
